@@ -2,6 +2,13 @@ import pandas as pd
 from prettytable import PrettyTable
 
 def getCustomerData(by, searchString):
+    """Get customer data from customers.csv file.
+    
+    Keyword arguments:
+    by -- 'name' or 'id'
+    searchString -- the name or id of the customer
+    """
+    
     df = pd.read_csv('customers.csv')
     if by == 'name':
         result = df[df['name'].str.contains(searchString, case=False)]
@@ -17,20 +24,35 @@ def getCustomerData(by, searchString):
 
 
 def viewCustomersData():
+    """ View all customers data from customers.csv file.
+    
+    Keyword arguments:
+    None
+    """
+    
     df = pd.read_csv('customers.csv')
     table = PrettyTable()
     table.field_names = df.columns
     for _, row in df.iterrows():
         table.add_row(row)
-    print(table)
+    return table
 
 
 def createCustomer(id, name, email, isActive, created):
+    """ Create a new customer and save it to customers.csv file.
+    
+    Keyword arguments:
+    id -- the id of the customer
+    name -- the name of the customer
+    email -- the email of the customer
+    isActive -- whether the customer is active or not
+    created -- the date the customer was created
+    """
     new_customer = pd.DataFrame([[id, name, email, isActive, created]], columns=['id', 'name', 'email', 'isActive', 'created'])
     df = pd.read_csv('customers.csv')
     df = pd.concat([df, new_customer], ignore_index=True)
     df.to_csv('customers.csv', index=False)
-    print("New customer created successfully.")
+    return "Customer created successfully."
 
 
 # Sample usage
